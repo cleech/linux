@@ -651,8 +651,9 @@ static void iscsi_sw_tcp_conn_stop(struct iscsi_cls_conn *cls_conn, int flag)
 
 static int
 iscsi_sw_tcp_conn_bind(struct iscsi_cls_session *cls_session,
-		       struct iscsi_cls_conn *cls_conn, uint64_t transport_eph,
-		       int is_leading)
+		       struct iscsi_cls_conn *cls_conn, 
+		       struct iscsi_endpoint *ep,
+		       uint64_t transport_eph, int is_leading)
 {
 	struct iscsi_session *session = cls_session->dd_data;
 	struct iscsi_conn *conn = cls_conn->dd_data;

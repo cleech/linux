@@ -1647,14 +1647,13 @@ static DECLARE_TRANSPORT_CLASS_NS(iscsi_host_class,
 				  &net_ns_type_operations,
 				  iscsi_host_namespace);
 
-struct net *iscsi_sess_net(struct iscsi_cls_session *cls_session)
+static struct net *iscsi_sess_net(struct iscsi_cls_session *cls_session)
 {
 	struct Scsi_Host *shost = iscsi_session_to_shost(cls_session);
 	struct iscsi_cls_host *ihost = shost->shost_data;
 
 	return iscsi_host_net(ihost);
 }
-EXPORT_SYMBOL_GPL(iscsi_sess_net);
 
 static const void *iscsi_sess_namespace(struct device *dev)
 {
@@ -3705,6 +3704,8 @@ iscsi_if_recv_msg(struct net *net, struct sk_buff *skb,
 	case ISCSI_UEVENT_BIND_CONN:
 		session = iscsi_session_lookup(net, ev->u.b_conn.sid);
 		conn = iscsi_conn_lookup(net, ev->u.b_conn.sid, ev->u.b_conn.cid);
+		ep = iscsi_lookup_endpoint(net, ev->u.b_conn.transport_eph);
+		/* FIXME, verify this is not NULL ... but no ep for iscsi_tcp ... */
 
 		if (conn && conn->ep)
 			iscsi_if_ep_disconnect(net, transport, conn->ep->id);
@@ -3714,7 +3715,7 @@ iscsi_if_recv_msg(struct net *net, struct sk_buff *skb,
 			break;
 		}
 
-		ev->r.retcode =	transport->bind_conn(session, conn,
+		ev->r.retcode =	transport->bind_conn(session, conn, ep,
 						ev->u.b_conn.transport_eph,
 						ev->u.b_conn.is_leading);
 		if (ev->r.retcode || !transport->ep_connect)

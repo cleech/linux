@@ -170,6 +170,7 @@ beiscsi_conn_create(struct iscsi_cls_session *cls_session, u32 cid)
  */
 int beiscsi_conn_bind(struct iscsi_cls_session *cls_session,
 		      struct iscsi_cls_conn *cls_conn,
+		      struct iscsi_endpoint *ep,
 		      u64 transport_fd, int is_leading)
 {
 	struct iscsi_conn *conn = cls_conn->dd_data;
@@ -179,14 +180,7 @@ int beiscsi_conn_bind(struct iscsi_cls_session *cls_session,
 	struct hwi_controller *phwi_ctrlr = phba->phwi_ctrlr;
 	struct hwi_wrb_context *pwrb_context;
 	struct beiscsi_endpoint *beiscsi_ep;
-	struct iscsi_endpoint *ep;
 	uint16_t cri_index;
-	struct net *net;
-
-	net = iscsi_sess_net(cls_session);
-	ep = iscsi_lookup_endpoint(net, transport_fd);
-	if (!ep)
-		return -EINVAL;
 
 	beiscsi_ep = ep->dd_data;
 

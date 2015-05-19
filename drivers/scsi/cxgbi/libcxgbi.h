@@ -589,8 +589,8 @@ int cxgbi_set_conn_param(struct iscsi_cls_conn *,
 			enum iscsi_param, char *, int);
 int cxgbi_get_ep_param(struct iscsi_endpoint *ep, enum iscsi_param, char *);
 struct iscsi_cls_conn *cxgbi_create_conn(struct iscsi_cls_session *, u32);
-int cxgbi_bind_conn(struct iscsi_cls_session *,
-			struct iscsi_cls_conn *, u64, int);
+int cxgbi_bind_conn(struct iscsi_cls_session *, struct iscsi_cls_conn *, 
+			struct iscsi_endpoint *, u64, int);
 void cxgbi_destroy_session(struct iscsi_cls_session *);
 struct iscsi_cls_session *cxgbi_create_session(struct iscsi_endpoint *,
 			u16, u16, u32);

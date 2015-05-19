@@ -52,6 +52,7 @@ struct iscsi_cls_conn *beiscsi_conn_create(struct iscsi_cls_session
 
 int beiscsi_conn_bind(struct iscsi_cls_session *cls_session,
 		      struct iscsi_cls_conn *cls_conn,
+		      struct iscsi_endpoint *ep,
 		      uint64_t transport_fd, int is_leading);
 
 int beiscsi_ep_get_param(struct iscsi_endpoint *ep, enum iscsi_param param,

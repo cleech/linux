@@ -97,6 +97,7 @@ struct iscsi_transport {
 				uint32_t cid);
 	int (*bind_conn) (struct iscsi_cls_session *session,
 			  struct iscsi_cls_conn *cls_conn,
+			  struct iscsi_endpoint *ep,
 			  uint64_t transport_eph, int is_leading);
 	int (*start_conn) (struct iscsi_cls_conn *conn);
 	void (*stop_conn) (struct iscsi_cls_conn *conn, int flag);
@@ -267,8 +268,6 @@ struct iscsi_cls_session {
 
 #define iscsi_session_to_shost(_session) \
 	dev_to_shost(_session->dev.parent)
-
-extern struct net *iscsi_sess_net(struct iscsi_cls_session *);
 
 #define starget_to_session(_stgt) \
 	iscsi_dev_to_session(_stgt->dev.parent)

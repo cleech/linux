@@ -2340,22 +2340,16 @@ EXPORT_SYMBOL_GPL(cxgbi_create_conn);
 
 int cxgbi_bind_conn(struct iscsi_cls_session *cls_session,
 				struct iscsi_cls_conn *cls_conn,
+				struct iscsi_endpoint *ep,
 				u64 transport_eph, int is_leading)
 {
 	struct iscsi_conn *conn = cls_conn->dd_data;
 	struct iscsi_tcp_conn *tcp_conn = conn->dd_data;
 	struct cxgbi_conn *cconn = tcp_conn->dd_data;
 	struct cxgbi_ppm *ppm;
-	struct iscsi_endpoint *ep;
 	struct cxgbi_endpoint *cep;
 	struct cxgbi_sock *csk;
-	struct net *net;
 	int err;
-
-	net = iscsi_sess_net(cls_session);
-	ep = iscsi_lookup_endpoint(net, transport_eph);
-	if (!ep)
-		return -EINVAL;
 
 	/*  setup ddp pagesize */
 	cep = ep->dd_data;

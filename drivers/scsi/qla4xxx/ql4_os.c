@@ -3170,15 +3170,14 @@ qla4xxx_conn_create(struct iscsi_cls_session *cls_sess, uint32_t conn_idx)
 
 static int qla4xxx_conn_bind(struct iscsi_cls_session *cls_session,
 			     struct iscsi_cls_conn *cls_conn,
+			     struct iscsi_endpoint *ep,
 			     uint64_t transport_fd, int is_leading)
 {
 	struct iscsi_conn *conn;
 	struct qla_conn *qla_conn;
-	struct iscsi_endpoint *ep;
 	struct ddb_entry *ddb_entry;
 	struct scsi_qla_host *ha;
 	struct iscsi_session *sess;
-	struct net *net;
 
 	sess = cls_session->dd_data;
 	ddb_entry = sess->dd_data;
@@ -3187,10 +3186,6 @@ static int qla4xxx_conn_bind(struct iscsi_cls_session *cls_session,
 	DEBUG2(ql4_printk(KERN_INFO, ha, "%s: sid = %d, cid = %d\n", __func__,
 			  cls_session->sid, cls_conn->cid));
 
-	net = iscsi_sess_net(cls_session);
-	ep = iscsi_lookup_endpoint(net, transport_fd);
-	if (!ep)
-		return -EINVAL;
 	if (iscsi_conn_bind(cls_session, cls_conn, is_leading))
 		return -EINVAL;
 	conn = cls_conn->dd_data;

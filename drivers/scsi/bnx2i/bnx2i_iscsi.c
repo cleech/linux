@@ -1406,6 +1406,7 @@ free_conn:
  */
 static int bnx2i_conn_bind(struct iscsi_cls_session *cls_session,
 			   struct iscsi_cls_conn *cls_conn,
+			   struct iscsi_endpoint *ep,
 			   uint64_t transport_fd, int is_leading)
 {
 	struct iscsi_conn *conn = cls_conn->dd_data;
@@ -1413,14 +1414,8 @@ static int bnx2i_conn_bind(struct iscsi_cls_session *cls_session,
 	struct Scsi_Host *shost = iscsi_session_to_shost(cls_session);
 	struct bnx2i_hba *hba = iscsi_host_priv(shost);
 	struct bnx2i_endpoint *bnx2i_ep;
-	struct iscsi_endpoint *ep;
-	struct net *net;
 	int ret_code;
 
-	net = iscsi_sess_net(cls_session);
-	ep = iscsi_lookup_endpoint(net, transport_fd);
-	if (!ep)
-		return -EINVAL;
 	/*
 	 * Forcefully terminate all in progress connection recovery at the
 	 * earliest, either in bind(), send_pdu(LOGIN), or conn_start()
