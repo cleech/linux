@@ -373,6 +373,7 @@ struct qedi_conn *qedi_get_conn_from_id(struct qedi_ctx *qedi, u32 iscsi_cid)
 
 static int qedi_conn_bind(struct iscsi_cls_session *cls_session,
 			  struct iscsi_cls_conn *cls_conn,
+			  struct iscsi_endpoint *ep,
 			  u64 transport_fd, int is_leading)
 {
 	struct iscsi_conn *conn = cls_conn->dd_data;
@@ -380,11 +381,6 @@ static int qedi_conn_bind(struct iscsi_cls_session *cls_session,
 	struct Scsi_Host *shost = iscsi_session_to_shost(cls_session);
 	struct qedi_ctx *qedi = iscsi_host_priv(shost);
 	struct qedi_endpoint *qedi_ep;
-	struct iscsi_endpoint *ep;
-
-	ep = iscsi_lookup_endpoint(transport_fd);
-	if (!ep)
-		return -EINVAL;
 
 	qedi_ep = ep->dd_data;
 	if ((qedi_ep->state == EP_STATE_TCP_FIN_RCVD) ||

@@ -130,6 +130,7 @@ static struct iscsi_cls_conn *
 qla4xxx_conn_create(struct iscsi_cls_session *cls_sess, uint32_t conn_idx);
 static int qla4xxx_conn_bind(struct iscsi_cls_session *cls_session,
 			     struct iscsi_cls_conn *cls_conn,
+			     struct iscsi_endpoint *ep,
 			     uint64_t transport_fd, int is_leading);
 static void qla4xxx_conn_destroy(struct iscsi_cls_conn *conn);
 static struct iscsi_cls_session *
@@ -7145,6 +7146,8 @@ exit_new_nt_list:
 	if (fw_ddb_entry)
 		dma_pool_free(ha->fw_ddb_dma_pool, fw_ddb_entry, fw_ddb_dma);
 }
+
+extern struct device_type iscsi_flashnode_sess_dev_type;
 
 /**
  * qla4xxx_sysfs_ddb_is_non_persistent - check for non-persistence of ddb entry
